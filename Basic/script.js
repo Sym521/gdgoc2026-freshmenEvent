@@ -1,4 +1,4 @@
-const GEMINI_API_KEY = "[APIKEY]"; // .env から転記
+const GEMINI_API_KEY = "[ENCRYPTION_KEY]"; // .env から転記
 
 const INGREDIENTS = {
   lettuce: { label: 'レタス', emoji: '🥬', color: '#7CB342', class: 'ing-lettuce' },

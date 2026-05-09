@@ -104,14 +104,7 @@ export default function Home() {
               </div>
             </div>
             
-            <div className={styles.gridContainer}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
-                <TaskList 
-                  tasks={parentTask.subTasks} 
-                  onCompleteTask={toggleSubTask} 
-                />
-              </div>
-              
+            <div className={styles.stackContainer}>
               <motion.div 
                 animate={isEating ? { scale: [1, 1.1, 0], opacity: [1, 1, 0], y: [0, -20, 50] } : {}}
                 transition={isEating ? { duration: 0.6, ease: 'easeIn', times: [0, 0.2, 1] } : {}}
@@ -123,6 +116,13 @@ export default function Home() {
                   isCompleted={isCompleted}
                 />
               </motion.div>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
+                <TaskList 
+                  tasks={parentTask.subTasks} 
+                  onCompleteTask={toggleSubTask} 
+                />
+              </div>
             </div>
           </motion.div>
         )}

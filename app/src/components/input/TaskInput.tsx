@@ -50,13 +50,14 @@ export function TaskInput({ onSubmit, isLoading }: TaskInputProps) {
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 'var(--space-sm)',
+          gap: 'var(--space-xs)',
           backgroundColor: 'var(--color-surface)',
-          padding: 'var(--space-sm)',
           borderRadius: 'var(--radius-full)',
           boxShadow: 'var(--shadow-md)',
           border: `1px solid var(--color-border)`,
           position: 'relative',
+          paddingRight: '8px',
+          overflow: 'hidden',
         }}
       >
         <input
@@ -70,7 +71,7 @@ export function TaskInput({ onSubmit, isLoading }: TaskInputProps) {
             flex: 1,
             border: 'none',
             background: 'transparent',
-            padding: 'var(--space-sm) var(--space-md)',
+            padding: '16px 24px',
             fontSize: 'var(--font-size-md)',
             color: 'var(--color-text)',
             outline: 'none',
@@ -79,11 +80,13 @@ export function TaskInput({ onSubmit, isLoading }: TaskInputProps) {
         />
 
         {isSupported && (
-          <MicButton 
-            isRecording={isRecording} 
-            onToggle={toggleRecording} 
-            disabled={isLoading}
-          />
+          <div style={{ transform: 'scale(0.85)' }}>
+            <MicButton 
+              isRecording={isRecording} 
+              onToggle={toggleRecording} 
+              disabled={isLoading}
+            />
+          </div>
         )}
 
         <motion.button
@@ -92,8 +95,8 @@ export function TaskInput({ onSubmit, isLoading }: TaskInputProps) {
           whileHover={text.trim() && !isLoading ? { scale: 1.05 } : {}}
           whileTap={text.trim() && !isLoading ? { scale: 0.95 } : {}}
           style={{
-            width: '48px',
-            height: '48px',
+            width: '40px',
+            height: '40px',
             borderRadius: '50%',
             border: 'none',
             backgroundColor: text.trim() && !isLoading ? 'var(--color-primary)' : 'var(--color-border)',
@@ -104,6 +107,7 @@ export function TaskInput({ onSubmit, isLoading }: TaskInputProps) {
             justifyContent: 'center',
             transition: 'background-color 0.3s',
             flexShrink: 0,
+            marginLeft: '4px',
           }}
           aria-label="送信"
         >
@@ -112,9 +116,9 @@ export function TaskInput({ onSubmit, isLoading }: TaskInputProps) {
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
               style={{
-                width: '20px',
-                height: '20px',
-                border: '3px solid rgba(255,255,255,0.3)',
+                width: '18px',
+                height: '18px',
+                border: '2px solid rgba(255,255,255,0.3)',
                 borderTopColor: 'var(--color-text-inverse)',
                 borderRadius: '50%',
               }}
@@ -122,15 +126,15 @@ export function TaskInput({ onSubmit, isLoading }: TaskInputProps) {
           ) : (
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
-              width="20" 
-              height="20" 
+              width="18" 
+              height="18" 
               viewBox="0 0 24 24" 
               fill="none" 
               stroke="currentColor" 
               strokeWidth="2" 
               strokeLinecap="round" 
               strokeLinejoin="round"
-              style={{ transform: 'translateX(-1px)' }} // Visual alignment for send icon
+              style={{ transform: 'translateX(-1px)' }}
             >
               <line x1="22" x2="11" y1="2" y2="13" />
               <polygon points="22 2 15 22 11 13 2 9 22 2" />
