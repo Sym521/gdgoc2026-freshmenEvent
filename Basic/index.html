@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Burger Task — AIタスク細分化アプリ (Vanilla JS)</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main class="main">
+    <h1 class="title">🍔 Burger Task</h1>
+    <p class="subtitle">タスクを食べて消化しよう</p>
+
+    <!-- タスク入力エリア -->
+    <div id="input-section" class="input-section">
+      <form id="task-form" class="task-form">
+        <input type="text" id="task-input" placeholder="今日やりたいことは何ですか？" autocomplete="off" />
+        <button type="button" id="mic-btn" class="mic-btn" aria-label="録音">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+            <line x1="12" x2="12" y1="19" y2="22" />
+          </svg>
+          <div id="mic-ripple" class="mic-ripple"></div>
+        </button>
+        <button type="submit" id="submit-btn" class="submit-btn" disabled>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: translateX(-1px)">
+            <line x1="22" x2="11" y1="2" y2="13" />
+            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+          </svg>
+        </button>
+      </form>
+      <div id="error-message" class="error-message"></div>
+    </div>
+
+    <!-- タスク表示・ハンバーガーエリア (初期非表示) -->
+    <div id="task-section" class="task-section" style="display: none;">
+      <div class="task-header">
+        <h2 id="parent-task-name" class="parent-task-name"></h2>
+        <button id="reset-btn" class="reset-btn">新しいタスクを作る</button>
+      </div>
+
+      <div class="grid-container">
+        <!-- 左側：タスクリスト -->
+        <div class="task-list-container">
+          <div class="task-list-header">
+            <h2 class="task-list-title"><span class="title-icon">📋</span>タスク</h2>
+            <div class="counter"><span id="completed-count">0</span><span class="separator">/</span><span id="total-count">0</span></div>
+          </div>
+          <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+          <div id="all-done-msg" class="all-done-msg" style="display: none;">
+            <span class="icon">🎉</span> 全タスク完了！ハンバーガー完成！
+          </div>
+          <div id="task-list" class="task-list"></div>
+        </div>
+
+        <!-- 右側：ハンバーガースタック -->
+        <div class="burger-container">
+          <div id="hamburger-stack" class="stack">
+            <div id="top-bun" class="bun top-bun floating">
+              <span class="sesame s1"></span>
+              <span class="sesame s2"></span>
+              <span class="sesame s3"></span>
+              <span class="sesame s4"></span>
+              <span class="sesame s5"></span>
+              <span id="bun-label" class="label"></span>
+            </div>
+            <div id="ingredients" class="ingredients"></div>
+            <div class="bun bottom-bun"></div>
+          </div>
+          <div class="plate"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
