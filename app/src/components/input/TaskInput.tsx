@@ -1,82 +1,50 @@
-<<<<<<< HEAD
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { MicButton } from './MicButton';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
-import styles from './TaskInput.module.css';
-
-interface TaskInputProps {
-  onSubmit: (taskName: string) => void;
-=======
-import React, { useState, useEffect } from 'react';
-import { useSpeechRecognition } from '../../hooks/useSpeechRecognition';
 import { MicButton } from './MicButton';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface TaskInputProps {
-  onSubmit: (task: string) => void;
->>>>>>> 5835434eb485624fa18f269208aeb7719b83112f
-  isLoading?: boolean;
+  onSubmit: (taskName: string) => Promise<void>;
+  isLoading: boolean;
 }
 
-export const TaskInput: React.FC<TaskInputProps> = ({ onSubmit, isLoading = false }) => {
-<<<<<<< HEAD
-  const [inputValue, setInputValue] = useState('');
-  const { text, isListening, startListening, stopListening, resetText, isSupported, error } = useSpeechRecognition();
+export function TaskInput({ onSubmit, isLoading }: TaskInputProps) {
+  const [text, setText] = useState('');
+  const { 
+    isRecording, 
+    transcript, 
+    error: speechError, 
+    isSupported, 
+    toggleRecording,
+    resetTranscript 
+  } = useSpeechRecognition();
+  
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // 音声認識のテキストが更新されたら入力欄に反映
-  useEffect(() => {
-    if (text) {
-      setInputValue(text);
-    }
-  }, [text]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const trimmed = inputValue.trim();
-    if (trimmed && !isLoading) {
-      onSubmit(trimmed);
-      setInputValue('');
-      resetText();
-=======
-  const { isListening, transcript, error, startListening, stopListening } = useSpeechRecognition();
-  const [inputValue, setInputValue] = useState('');
-
-  // Update input value when transcript changes
+  // Update input text when transcript changes
   useEffect(() => {
     if (transcript) {
-      setInputValue(transcript);
+      setText(transcript);
     }
   }, [transcript]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (inputValue.trim() && !isLoading) {
-      onSubmit(inputValue.trim());
-      setInputValue('');
->>>>>>> 5835434eb485624fa18f269208aeb7719b83112f
+    if (!text.trim() || isLoading) return;
+
+    if (isRecording) {
+      toggleRecording(); // Stop recording if submitting
     }
+    
+    await onSubmit(text.trim());
+    setText('');
+    resetTranscript();
   };
 
   return (
-<<<<<<< HEAD
-    <form onSubmit={handleSubmit} className={styles.formContainer}>
-      <div className={styles.inputWrapper}>
-=======
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="task-input-container"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--space-sm)',
-        width: '100%',
-        maxWidth: '600px',
-        margin: '0 auto',
-      }}
-    >
+    <div style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>
       <form 
         onSubmit={handleSubmit}
         style={{
@@ -85,92 +53,113 @@ export const TaskInput: React.FC<TaskInputProps> = ({ onSubmit, isLoading = fals
           gap: 'var(--space-sm)',
           backgroundColor: 'var(--color-surface)',
           padding: 'var(--space-sm)',
-          borderRadius: 'var(--radius-xl)',
-          boxShadow: 'var(--shadow-lg)',
-          border: '1px solid var(--color-border)',
+          borderRadius: 'var(--radius-full)',
+          boxShadow: 'var(--shadow-md)',
+          border: `1px solid var(--color-border)`,
+          position: 'relative',
         }}
       >
->>>>>>> 5835434eb485624fa18f269208aeb7719b83112f
         <input
+          ref={inputRef}
           type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-<<<<<<< HEAD
-          placeholder="タスクを入力（またはマイクを長押し）"
-          className={styles.textInput}
-          disabled={isLoading || isListening}
-        />
-        {isSupported && (
-          <MicButton
-            isListening={isListening}
-            onStart={() => {
-              resetText();
-              startListening();
-            }}
-            onStop={stopListening}
-            disabled={isLoading}
-          />
-        )}
-      </div>
-      {error && <p className={styles.errorText}>{error}</p>}
-      <button
-        type="submit"
-        disabled={!inputValue.trim() || isLoading}
-        className={styles.submitButton}
-      >
-        {isLoading ? '細分化中...' : 'タスクを細分化する'}
-      </button>
-    </form>
-=======
-          placeholder={isListening ? '話しかけてください...' : 'どんなタスクを分解しますか？'}
-          disabled={isLoading}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="今日やりたいことは何ですか？"
+          disabled={isLoading || isRecording}
           style={{
             flex: 1,
             border: 'none',
-            outline: 'none',
+            background: 'transparent',
             padding: 'var(--space-sm) var(--space-md)',
             fontSize: 'var(--font-size-md)',
-            fontFamily: 'var(--font-body)',
-            backgroundColor: 'transparent',
             color: 'var(--color-text)',
+            outline: 'none',
+            fontFamily: 'var(--font-body)',
           }}
-        />
-        
-        <MicButton 
-          isListening={isListening} 
-          onStart={startListening} 
-          onStop={stopListening} 
         />
 
-        <button
+        {isSupported && (
+          <MicButton 
+            isRecording={isRecording} 
+            onToggle={toggleRecording} 
+            disabled={isLoading}
+          />
+        )}
+
+        <motion.button
           type="submit"
-          disabled={!inputValue.trim() || isLoading}
+          disabled={!text.trim() || isLoading}
+          whileHover={text.trim() && !isLoading ? { scale: 1.05 } : {}}
+          whileTap={text.trim() && !isLoading ? { scale: 0.95 } : {}}
           style={{
-            backgroundColor: inputValue.trim() && !isLoading ? 'var(--color-primary)' : 'var(--color-border)',
-            color: 'var(--color-text-inverse)',
-            border: 'none',
-            borderRadius: 'var(--radius-full)',
-            padding: 'var(--space-sm) var(--space-lg)',
-            fontWeight: 600,
-            cursor: inputValue.trim() && !isLoading ? 'pointer' : 'not-allowed',
-            transition: 'background-color 0.2s',
+            width: '48px',
             height: '48px',
+            borderRadius: '50%',
+            border: 'none',
+            backgroundColor: text.trim() && !isLoading ? 'var(--color-primary)' : 'var(--color-border)',
+            color: 'var(--color-text-inverse)',
+            cursor: text.trim() && !isLoading ? 'pointer' : 'not-allowed',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'background-color 0.3s',
+            flexShrink: 0,
           }}
+          aria-label="送信"
         >
-          {isLoading ? '処理中...' : '追加'}
-        </button>
+          {isLoading ? (
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+              style={{
+                width: '20px',
+                height: '20px',
+                border: '3px solid rgba(255,255,255,0.3)',
+                borderTopColor: 'var(--color-text-inverse)',
+                borderRadius: '50%',
+              }}
+            />
+          ) : (
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="20" 
+              height="20" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+              style={{ transform: 'translateX(-1px)' }} // Visual alignment for send icon
+            >
+              <line x1="22" x2="11" y1="2" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          )}
+        </motion.button>
       </form>
-      
-      {error && (
-        <div style={{ color: 'var(--color-error)', fontSize: 'var(--font-size-sm)', paddingLeft: 'var(--space-md)' }}>
-          {error}
-        </div>
-      )}
-      
-      <div style={{ color: 'var(--color-text-light)', fontSize: 'var(--font-size-xs)', textAlign: 'center' }}>
-        ※ マイクボタンを長押し（またはタップしたまま）で音声入力ができます。
-      </div>
-    </motion.div>
->>>>>>> 5835434eb485624fa18f269208aeb7719b83112f
+
+      {/* Error Message */}
+      <AnimatePresence>
+        {speechError && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            style={{
+              marginTop: 'var(--space-sm)',
+              padding: 'var(--space-sm) var(--space-md)',
+              backgroundColor: 'var(--color-error-light)',
+              color: 'var(--color-error)',
+              borderRadius: 'var(--radius-md)',
+              fontSize: 'var(--font-size-sm)',
+              textAlign: 'center',
+            }}
+          >
+            {speechError}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
-};
+}

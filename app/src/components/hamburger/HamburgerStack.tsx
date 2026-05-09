@@ -4,6 +4,7 @@ import { BottomBun } from './BottomBun';
 import { TopBun } from './TopBun';
 import { Ingredient } from './Ingredient';
 import styles from './HamburgerStack.module.css';
+import { AnimatePresence } from 'framer-motion';
 
 // ---- Props 定義 ----
 interface HamburgerStackProps {
@@ -33,13 +34,16 @@ export function HamburgerStack({
         <TopBun
           taskName={taskName}
           floating={!isCompleted}
+          landed={isCompleted}
         />
 
         {/* 具材エリア */}
         <div className={styles.ingredients}>
-          {completedTasks.map((task) => (
-            <Ingredient key={task.id} type={task.ingredient} />
-          ))}
+          <AnimatePresence>
+            {completedTasks.map((task) => (
+              <Ingredient key={task.id} type={task.ingredient} taskId={task.id} />
+            ))}
+          </AnimatePresence>
         </div>
 
         {/* 下バンズ */}
