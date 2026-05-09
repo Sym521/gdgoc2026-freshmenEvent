@@ -38,7 +38,10 @@
     <div id="task-section" class="task-section" style="display: none;">
       <div class="task-header">
         <h2 id="parent-task-name" class="parent-task-name"></h2>
-        <button id="reset-btn" class="reset-btn">新しいタスクを作る</button>
+        <div style="display: flex; gap: var(--space-md);">
+          <button id="eat-btn" class="eat-btn" style="display: none;">ハンバーガーを食べる 🍔</button>
+          <button id="reset-btn" class="reset-btn">新しいタスクを作る</button>
+        </div>
       </div>
 
       <div class="grid-container">
@@ -73,6 +76,16 @@
           </div>
           <div class="plate"></div>
         </div>
+      </div>
+    </div>
+
+    <!-- Eat Animation Overlay -->
+    <div id="eat-overlay" class="eat-overlay" style="display: none;">
+      <div id="particle-container" class="particle-container"></div>
+      <div id="eat-feedback" class="eat-feedback" style="display: none;">
+        <span class="feedback-emoji">🎉</span>
+        <span class="feedback-text">完食！</span>
+        <span class="feedback-sub">タスク完了おめでとう！</span>
       </div>
     </div>
   </main>
