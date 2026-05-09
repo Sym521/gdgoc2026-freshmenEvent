@@ -3,8 +3,8 @@ import { DecomposeRequest, DecomposeResponse } from '@/types/task';
 /**
  * ユーザー入力のタスクをGemini APIに送信し、子タスクに分割する
  */
-export async function decomposeTask(taskName: string): Promise<DecomposeResponse> {
-  const reqBody: DecomposeRequest = { taskName };
+export async function decomposeTask(taskName: string, apiKey?: string): Promise<DecomposeResponse> {
+  const reqBody: DecomposeRequest = { taskName, apiKey };
   
   const response = await fetch('/api/tasks/decompose', {
     method: 'POST',

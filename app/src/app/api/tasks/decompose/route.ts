@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { DecomposeRequest, DecomposeResponse, ParentTask } from '@/types/task';
 import { checkRateLimit } from '@/lib/rateLimit';
-import { geminiModel } from '@/lib/gemini';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { buildDecomposeTaskPrompt } from '@/lib/prompts';
 import { parseGeminiResponse } from '@/lib/parser';
 
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { taskName } = body as Partial<DecomposeRequest>;
+    const { taskName, apiKey } = body as Partial<DecomposeRequest>;
 
     // B-2-2: バリデーション
     if (!taskName || typeof taskName !== 'string') {
@@ -54,7 +54,14 @@ export async function POST(request: Request) {
 
     // B-1のGemini API連携を呼び出す (B-2-1)
     const prompt = buildDecomposeTaskPrompt(trimmedTaskName);
-    const result = await geminiModel.generateContent(prompt);
+    
+    const keyToUse = apiKey || process.env.GEMINI_API_KEY || '';
+    if (!keyToUse) {
+      return NextResponse.json({ error: 'API Key is missing' }, { status: 400 });
+    }
+    const genAI = new GoogleGenerativeAI(keyToUse);
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const result = await model.generateContent(prompt);
     const responseText = result.response.text();
     const subTasks = parseGeminiResponse(responseText);
 

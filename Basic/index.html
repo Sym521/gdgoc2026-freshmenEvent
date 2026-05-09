@@ -14,6 +14,14 @@
 
     <!-- タスク入力エリア -->
     <div id="input-section" class="input-section">
+      <div style="margin-bottom: var(--space-md);">
+        <input 
+          type="password" 
+          id="api-key-input" 
+          placeholder="Gemini APIキーを入力してください"
+          style="width: 100%; padding: 12px 20px; border-radius: var(--radius-full); border: 1px solid var(--color-border); outline: none; font-size: 14px; box-shadow: var(--shadow-sm);"
+        />
+      </div>
       <form id="task-form" class="task-form">
         <input type="text" id="task-input" placeholder="今日やりたいことは何ですか？" autocomplete="off" />
         <button type="button" id="mic-btn" class="mic-btn" aria-label="録音" style="transform: scale(0.85);">

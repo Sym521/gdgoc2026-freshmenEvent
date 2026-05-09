@@ -1,4 +1,4 @@
-const GEMINI_API_KEY = "[ENCRYPTION_KEY]"; // .env から転記
+// APIキーはUIから取得するように変更しました
 
 const INGREDIENTS = {
   lettuce: { label: 'レタス', emoji: '🥬', color: '#7CB342', class: 'ing-lettuce' },
@@ -17,6 +17,7 @@ const state = {
 };
 
 // DOM Elements
+const apiKeyInput = document.getElementById('api-key-input');
 const taskInput = document.getElementById('task-input');
 const micBtn = document.getElementById('mic-btn');
 const submitBtn = document.getElementById('submit-btn');
@@ -111,9 +112,14 @@ micBtn.addEventListener('click', () => {
 
 // Gemini API Call
 async function decomposeTask(taskName) {
+  const apiKey = apiKeyInput.value.trim();
+  if (!apiKey) {
+    throw new Error('APIキーを入力してください');
+  }
+
   const prompt = `あなたはタスク分解の専門家です。以下の親タスクを、実行可能な具体的な子タスク（3〜5個）に分割してください。各子タスクには、ハンバーガーの具材（'lettuce', 'tomato', 'cheese', 'patty', 'onion', 'bacon' のいずれか）を1つずつ割り当ててください。\n親タスク: "${taskName}"\n出力は以下のJSON配列形式のみとしてください。\n[\n  {\n    "name": "子タスクの名前",\n    "ingredient": "具材名"\n  }\n]`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
   const response = await fetch(url, {
     method: 'POST',

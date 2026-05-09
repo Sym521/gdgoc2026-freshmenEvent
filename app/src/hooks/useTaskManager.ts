@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { ParentTask } from '@/types/task';
 import { decomposeTask } from '@/lib/apiClient';
 
-export function useTaskManager() {
+export function useTaskManager(apiKey?: string) {
   const [parentTask, setParentTask] = useState<ParentTask | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +14,7 @@ export function useTaskManager() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await decomposeTask(taskName);
+      const response = await decomposeTask(taskName, apiKey);
       setParentTask(response.parentTask);
     } catch (err: any) {
       console.error('Task decomposition error:', err);

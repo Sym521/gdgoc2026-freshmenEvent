@@ -20,6 +20,7 @@ export interface ParentTask {
 /** タスク細分化 API リクエスト */
 export interface DecomposeRequest {
   taskName: string;
+  apiKey?: string;
 }
 
 /** タスク細分化 API レスポンス */

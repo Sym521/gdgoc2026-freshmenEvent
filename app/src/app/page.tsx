@@ -10,7 +10,8 @@ import styles from './page.module.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
-  const { parentTask, isLoading, error, createTask, toggleSubTask, resetTask } = useTaskManager();
+  const [apiKey, setApiKey] = useState('');
+  const { parentTask, isLoading, error, createTask, toggleSubTask, resetTask } = useTaskManager(apiKey);
   const [isEating, setIsEating] = useState(false);
 
   const handleTaskSubmit = async (taskName: string) => {
@@ -41,6 +42,23 @@ export default function Home() {
             exit={{ opacity: 0, y: -20 }}
             style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
           >
+            <div style={{ width: '100%', maxWidth: '600px', marginBottom: 'var(--space-md)' }}>
+              <input 
+                type="password" 
+                placeholder="Gemini APIキーを入力してください"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '12px 20px',
+                  borderRadius: 'var(--radius-full)',
+                  border: '1px solid var(--color-border)',
+                  outline: 'none',
+                  fontSize: '14px',
+                  boxShadow: 'var(--shadow-sm)'
+                }}
+              />
+            </div>
             <TaskInput onSubmit={handleTaskSubmit} isLoading={isLoading} />
             {error && (
               <p style={{ color: 'var(--color-error)', textAlign: 'center', marginTop: 'var(--space-md)' }}>
