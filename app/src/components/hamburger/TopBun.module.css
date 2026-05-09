@@ -1,0 +1,80 @@
+/* TopBun.module.css — 上バンズのスタイル */
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: var(--z-bun-top);
+}
+
+.bun {
+  width: var(--hamburger-width);
+  height: 64px;
+  background: linear-gradient(
+    180deg,
+    #F0B760 0%,
+    var(--color-bun-top) 40%,
+    var(--color-bun-bottom) 100%
+  );
+  border-radius: 50% 50% 8px 8px / 100% 100% 8px 8px;
+  position: relative;
+  box-shadow:
+    0 4px 0 var(--color-bun-shadow),
+    var(--shadow-md);
+}
+
+/* ハイライト（天面の光沢） */
+.bun::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  right: 30px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-full);
+}
+
+/* ゴマ粒 */
+.sesame {
+  position: absolute;
+  width: 6px;
+  height: 4px;
+  background: var(--color-sesame);
+  border-radius: 50%;
+  opacity: 0.9;
+}
+
+.sesame:nth-child(1) { top: 14px; left: 50px; transform: rotate(-20deg); }
+.sesame:nth-child(2) { top: 10px; left: 90px; transform: rotate(15deg); }
+.sesame:nth-child(3) { top: 18px; left: 130px; transform: rotate(-10deg); }
+.sesame:nth-child(4) { top: 8px; left: 160px; transform: rotate(25deg); }
+.sesame:nth-child(5) { top: 22px; left: 70px; transform: rotate(5deg); }
+
+/* 親タスク名ラベル */
+.label {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
+}
+
+/* 浮遊アニメーション */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.floating {
+  animation: float 3s var(--ease-smooth) infinite;
+}

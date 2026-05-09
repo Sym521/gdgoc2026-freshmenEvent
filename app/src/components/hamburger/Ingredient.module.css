@@ -1,0 +1,134 @@
+/* Ingredient.module.css — 具材のスタイル */
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: var(--z-ingredient);
+}
+
+.ingredient {
+  width: var(--hamburger-width);
+  position: relative;
+  border-radius: 4px;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* ---- 具材別スタイル ---- */
+
+.lettuce {
+  height: 18px;
+  background: linear-gradient(180deg, #8BC34A 0%, #7CB342 50%, #689F38 100%);
+  border-radius: 4px 4px 12px 12px;
+  /* レタスの波形 */
+  clip-path: polygon(
+    0% 30%, 5% 60%, 10% 20%, 18% 70%, 25% 10%, 33% 55%,
+    40% 15%, 48% 65%, 55% 20%, 63% 60%, 70% 10%, 78% 55%,
+    85% 25%, 92% 65%, 100% 30%, 100% 100%, 0% 100%
+  );
+}
+
+.tomato {
+  height: 14px;
+  background: linear-gradient(180deg, #EF5350 0%, #E53935 50%, #C62828 100%);
+  border-radius: 6px;
+}
+
+/* トマトの種を表現 */
+.tomato::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 5px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 12px,
+    rgba(255, 205, 210, 0.5) 12px,
+    rgba(255, 205, 210, 0.5) 14px
+  );
+  border-radius: var(--radius-full);
+}
+
+.cheese {
+  height: 10px;
+  background: linear-gradient(180deg, #FFD54F 0%, #FFB300 100%);
+  border-radius: 2px;
+  /* チーズの溶けた端 */
+  width: calc(var(--hamburger-width) + 12px);
+  margin-left: -6px;
+}
+
+.cheese::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 10px;
+  width: 16px;
+  height: 8px;
+  background: var(--color-cheese);
+  border-radius: 0 0 50% 50%;
+}
+
+.patty {
+  height: 24px;
+  background: linear-gradient(180deg, #795548 0%, #6D4C41 40%, #5D4037 100%);
+  border-radius: 6px;
+  box-shadow:
+    0 3px 0 #4E342E,
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+/* パティの焼き目テクスチャ */
+.patty::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+
+.onion {
+  height: 12px;
+  background: linear-gradient(180deg, #F3E5F5 0%, #E1BEE7 50%, #CE93D8 100%);
+  border-radius: 50% / 100%;
+  opacity: 0.85;
+}
+
+/* オニオンリングの重なり */
+.onion::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 30px;
+  right: 30px;
+  height: 7px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+}
+
+.bacon {
+  height: 10px;
+  background: linear-gradient(
+    90deg,
+    #C62828 0%, #D32F2F 20%, #EF9A9A 25%, #D32F2F 30%,
+    #C62828 50%, #D32F2F 70%, #EF9A9A 75%, #D32F2F 80%, #C62828 100%
+  );
+  border-radius: 4px;
+  /* ベーコンの波打ち */
+  clip-path: polygon(
+    0% 40%, 15% 20%, 30% 50%, 45% 15%, 60% 45%, 75% 20%, 90% 50%, 100% 30%,
+    100% 100%, 0% 100%
+  );
+}

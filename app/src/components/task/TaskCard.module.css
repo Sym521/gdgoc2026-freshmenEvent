@@ -1,0 +1,192 @@
+/* TaskCard.module.css — 子タスクカードのスタイル */
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-smooth),
+    box-shadow var(--duration-fast) var(--ease-smooth),
+    border-color var(--duration-fast) var(--ease-smooth);
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(255, 107, 53, 0.03) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-smooth);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary-light);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:active {
+  transform: translateY(0px) scale(0.99);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---- 完了状態 ---- */
+
+.completed {
+  background: var(--color-success-light);
+  border-color: var(--color-success);
+  cursor: default;
+}
+
+.completed:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+  border-color: var(--color-success);
+}
+
+.completed .taskName {
+  text-decoration: line-through;
+  color: var(--color-text-light);
+}
+
+.completed .ingredientBadge {
+  opacity: 0.6;
+}
+
+/* ---- 具材バッジ ---- */
+
+.ingredientBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  transition: transform var(--duration-fast) var(--ease-bounce);
+  position: relative;
+  z-index: 1;
+}
+
+.card:hover .ingredientBadge {
+  transform: scale(1.12) rotate(-6deg);
+}
+
+/* ---- テキスト領域 ---- */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.taskName {
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.4;
+  transition: color var(--duration-fast) var(--ease-smooth);
+}
+
+.ingredientLabel {
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-light);
+  letter-spacing: 0.02em;
+}
+
+/* ---- チェックマーク ---- */
+
+.checkmark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border);
+  flex-shrink: 0;
+  transition:
+    background var(--duration-fast) var(--ease-smooth),
+    border-color var(--duration-fast) var(--ease-smooth),
+    transform var(--duration-fast) var(--ease-bounce);
+  position: relative;
+  z-index: 1;
+}
+
+.card:hover .checkmark {
+  border-color: var(--color-primary-light);
+}
+
+.checkmarkCompleted {
+  background: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.checkmarkIcon {
+  width: 14px;
+  height: 14px;
+  stroke: var(--color-text-inverse);
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    opacity var(--duration-fast) var(--ease-smooth),
+    transform var(--duration-fast) var(--ease-bounce);
+}
+
+.checkmarkCompleted .checkmarkIcon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ---- レスポンシブ ---- */
+
+@media (max-width: 480px) {
+  .card {
+    padding: var(--space-sm) var(--space-md);
+    gap: var(--space-sm);
+  }
+
+  .ingredientBadge {
+    width: 36px;
+    height: 36px;
+    font-size: 1.25rem;
+  }
+
+  .taskName {
+    font-size: var(--font-size-sm);
+  }
+
+  .checkmark {
+    width: 24px;
+    height: 24px;
+  }
+}
